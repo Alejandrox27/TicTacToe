@@ -1,9 +1,27 @@
 import './App.css'
 
-function App(){
+export default function App(){
   return(
-    <h1>Hola mundo</h1>
+    <>
+    <div className='container'>
+      <div className='board-row'>
+        <button className='square'>X</button>
+        <button className='square'>X</button>
+        <button className='square'>X</button>
+      </div>
+
+      <div className='board-row'>
+        <button className='square'>X</button>
+        <button className='square'>X</button>
+        <button className='square'>X</button>
+      </div>
+
+      <div className='board-row'>
+        <button className='square'>X</button>
+        <button className='square'>X</button>
+        <button className='square'>X</button>
+      </div>
+    </div>
+    </>
   )
 }
-
-export default App;

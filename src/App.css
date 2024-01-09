@@ -1,0 +1,33 @@
+*{
+  box-sizing: border-box;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.board-row{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.square{
+  background-color: #FFF;
+  border: 1px solid #979595;
+  background-color: aquamarine;
+  height: 60px;
+  width: 60px;
+  margin-top: -1px;
+  margin-right: -1px;
+  font-weight: bold;
+  font-size: 20px;
+  padding: 0;
+  text-align: center;
+
+}
