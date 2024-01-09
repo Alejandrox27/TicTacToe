@@ -15,18 +15,36 @@ export default function App(){
     setXIsNext(!xIsNext);
   }
 
+  let status_win;
+  let status_next;
+
+  function restartGame(){
+    document.getElementsByClassName("status-win")[0].classList.add("d-none")
+    document.getElementsByClassName("button-restart")[0].classList.add("d-none")
+    document.getElementsByClassName("container")[0].classList.remove("d-none")
+    
+    status_next = "Next Player: " + (xIsNext ? "X" : "O");
+  }
+
   const winner = calculateWinner(squares);
-  let status;
+  
   if (winner) {
-    status = "Winner: " + winner;
+    status_win = "Winner: " + winner;
+    document.getElementsByClassName("status-win")[0].classList.remove("d-none")
+    document.getElementsByClassName("button-restart")[0].classList.remove("d-none")
+    document.getElementsByClassName("container")[0].classList.add("d-none")
   } else {
-    status = "Next Player: " + (xIsNext ? "X" : "O");
+    status_next = "Next Player: " + (xIsNext ? "X" : "O");
   }
 
   return(
     <>
-    <div className='status'>{status}</div>
+    <div className='d-none status-win'>
+      <h3>{status_win}</h3>
+      <button onClick={restartGame} className='d-none button-restart'>Restart</button>
+    </div>
     <div className='container'>
+      <div className='status-next'>{status_next}</div>
       <div className='board-row'>
         <Square value={squares[0]} onSquareClick={() => (handleClick(0))} />
         <Square value={squares[1]} onSquareClick={() => (handleClick(1))} />
