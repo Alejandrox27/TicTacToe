@@ -2,17 +2,14 @@ import { useState } from 'react'
 import { Square } from './components/Square'
 import './App.css'
 
-export default function App(){
-  const [xIsNext, setXIsNext] = useState(true);
-  const [squares, setSquares] = useState(Array(9).fill(null));
-
+function Board({ squares, xIsNext, onPlay }){
   function handleClick(i){
     if(squares[i] || calculateWinner(squares)) return;
     
     const nextSquares = squares.slice();
     nextSquares[i] = xIsNext ? "X" : "O";
-    setSquares(nextSquares);
-    setXIsNext(!xIsNext);
+
+    onPlay(nextSquares);
   }
 
   let status_win;
@@ -23,8 +20,7 @@ export default function App(){
     document.getElementById("restart-button").classList.add("d-none")
     document.getElementsByClassName("container")[0].classList.remove("d-none")
     document.getElementById("restart-game").classList.add("d-none")
-    setSquares(Array(9).fill(null));
-    setXIsNext(true);
+    onPlay(Array(9).fill(null));
   }
 
   const winner = calculateWinner(squares);
@@ -98,4 +94,48 @@ function calculateWinner(squares) {
     }
   }
   return null;
+}
+
+export default function game(){
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [currentMove, setCurrentMove] = useState(0);
+  const xIsNext = currentMove % 2 === 0;
+  const currentSquares = history[history.length - 1];
+
+  const handlePlay = (nextSquares) => {
+    setHistory([...history, nextSquares])
+    setCurrentMove(currentMove + 1)
+  }
+
+  const jumpTo = (move) => {
+    
+  }
+
+  let description = "";
+  const moves = history.map((squares, move) => {
+    if(move > 0){
+      description = "Go to Move #" + move;
+    } else {
+      description = "Go to start";
+    }
+
+    return (
+      <>
+        <li key={move}>
+          <button onClick={() => jumpTo(move)}>{description}</button>
+        </li>
+      </>
+    );
+  });
+
+  return (
+    <>
+      <div className='BodyGame'>
+        <Board squares={currentSquares} xIsNext={xIsNext} onPlay={handlePlay} />
+      </div>
+      <div className='BodyHistory'>
+        <ol>{moves}</ol>
+      </div>
+    </>
+  );
 }
