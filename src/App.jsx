@@ -20,28 +20,34 @@ export default function App(){
 
   function restartGame(){
     document.getElementsByClassName("status-win")[0].classList.add("d-none")
-    document.getElementsByClassName("button-restart")[0].classList.add("d-none")
+    document.getElementById("restart-button").classList.add("d-none")
     document.getElementsByClassName("container")[0].classList.remove("d-none")
     setSquares(Array(9).fill(null));
     setXIsNext(true);
   }
 
   const winner = calculateWinner(squares);
+  const arrNull = squares.includes(null);
+
+  if(!winner && !arrNull){
+    document.getElementById("restart-game").classList.remove("d-none")
+  }
   
   if (winner) {
     status_win = "Winner: " + winner;
     document.getElementsByClassName("status-win")[0].classList.remove("d-none")
-    document.getElementsByClassName("button-restart")[0].classList.remove("d-none")
+    document.getElementById("restart-button").classList.remove("d-none")
     document.getElementsByClassName("container")[0].classList.add("d-none")
   } else {
     status_next = "Next Player: " + (xIsNext ? "X" : "O");
   }
 
+
   return(
     <>
     <div className='d-none status-win'>
       <h3>{status_win}</h3>
-      <button onClick={restartGame} className='d-none button-restart'>Restart</button>
+      <button onClick={restartGame} className='d-none button-restart' id='restart-button'>Restart</button>
     </div>
     <div className='container'>
       <div className='status-next'>{status_next}</div>
@@ -62,7 +68,11 @@ export default function App(){
         <Square value={squares[7]} onSquareClick={() => (handleClick(7))} />
         <Square value={squares[8]} onSquareClick={() => (handleClick(8))} />
       </div>
+      <div>
+        <button onClick={restartGame} className='button-restart d-none' id='restart-game'>Restart</button>
+      </div>
     </div>
+    
     </>
   )
 }
