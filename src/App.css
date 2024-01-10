@@ -3,6 +3,7 @@
 
 *{
   box-sizing: border-box;
+  color: #FFF;
 }
 
 .container{
@@ -19,12 +20,13 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .square{
-  background-color: #FFF;
-  border: 1px solid #979595;
-  background-color: aquamarine;
+  border: none;
+  margin: 6px;
+  background-color: #1b1a1a;
   height: 90px;
   width: 90px;
   margin-top: -1px;
@@ -35,11 +37,24 @@
   text-align: center;
   cursor: pointer;
   font-family: 'Raleway', sans-serif;
+}
 
+.board-row::before{
+  position: absolute;
+  content: "";
+  height: 110%;
+  width: 103%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 7px;
+  background-image: linear-gradient(90deg, rgba(58,91,180,1) 0%, rgba(248,253,29,1) 50%, rgba(103,252,69,1) 100%);
+  left: -0.1%;
+  top: -8%;
+  z-index: -1;
 }
 
 .status-next{
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   font-size: 25px;
 
 }
@@ -57,18 +72,33 @@
 }
 
 .button-restart{
-  width: 20%;
+  width: 100%;
   min-width: 200px;
   height: 40px;
   border-radius: 7px;
   border: none;
-  background-color: aqua;
+  background-color: #1b1a1a;
   font-size: 20px;
   font-weight: 600;
   cursor: pointer;
   font-weight: 700;
   margin-top: 20px;
+  position: relative;
   font-family: 'Raleway', sans-serif;
+}
+
+.button-restart::before{
+  position: absolute;
+  content: "";
+  height: 120%;
+  width: 105%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 7px;
+  background-image: linear-gradient(90deg, rgba(58,91,180,1) 0%, rgba(248,253,29,1) 50%, rgba(103,252,69,1) 100%);
+  left: -2.7%;
+  top: -10%;
+  z-index: -1;
 }
 
 .d-none{

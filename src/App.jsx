@@ -22,6 +22,7 @@ export default function App(){
     document.getElementsByClassName("status-win")[0].classList.add("d-none")
     document.getElementById("restart-button").classList.add("d-none")
     document.getElementsByClassName("container")[0].classList.remove("d-none")
+    document.getElementById("restart-game").classList.add("d-none")
     setSquares(Array(9).fill(null));
     setXIsNext(true);
   }
@@ -47,7 +48,9 @@ export default function App(){
     <>
     <div className='d-none status-win'>
       <h3>{status_win}</h3>
-      <button onClick={restartGame} className='d-none button-restart' id='restart-button'>Restart</button>
+      <div className='gradient'>
+        <button onClick={restartGame} className='d-none button-restart' id='restart-button'>Restart</button>
+      </div>
     </div>
     <div className='container'>
       <div className='status-next'>{status_next}</div>
@@ -68,7 +71,7 @@ export default function App(){
         <Square value={squares[7]} onSquareClick={() => (handleClick(7))} />
         <Square value={squares[8]} onSquareClick={() => (handleClick(8))} />
       </div>
-      <div>
+      <div className='gradient'>
         <button onClick={restartGame} className='button-restart d-none' id='restart-game'>Restart</button>
       </div>
     </div>
