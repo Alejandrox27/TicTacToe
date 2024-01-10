@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import './App.css'
 import { Square } from './components/Square'
+import './App.css'
 
 export default function App(){
   const [xIsNext, setXIsNext] = useState(true);
@@ -22,8 +22,8 @@ export default function App(){
     document.getElementsByClassName("status-win")[0].classList.add("d-none")
     document.getElementsByClassName("button-restart")[0].classList.add("d-none")
     document.getElementsByClassName("container")[0].classList.remove("d-none")
-    
-    status_next = "Next Player: " + (xIsNext ? "X" : "O");
+    setSquares(Array(9).fill(null));
+    setXIsNext(true);
   }
 
   const winner = calculateWinner(squares);
