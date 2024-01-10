@@ -20,6 +20,7 @@ function Board({ squares, xIsNext, onPlay, jumpTo }){
     document.getElementById("restart-button").classList.add("d-none")
     document.getElementsByClassName("container")[0].classList.remove("d-none")
     document.getElementById("restart-game").classList.add("d-none")
+    document.getElementById("movesList").classList.remove("d-none");
     jumpTo(0);
   }
 
@@ -35,6 +36,7 @@ function Board({ squares, xIsNext, onPlay, jumpTo }){
     document.getElementsByClassName("status-win")[0].classList.remove("d-none")
     document.getElementById("restart-button").classList.remove("d-none")
     document.getElementsByClassName("container")[0].classList.add("d-none")
+    document.getElementById("movesList").classList.add("d-none");
   } else {
     status_next = "Next Player: " + (xIsNext ? "X" : "O");
   }
@@ -110,6 +112,9 @@ export default function game(){
 
   const jumpTo = (move) => {
     setCurrentMove(move);
+    if (move === 0){
+      document.getElementById("restart-game").classList.add("d-none")
+    }
   }
 
   let description = "";
@@ -122,7 +127,7 @@ export default function game(){
 
     return (
       <>
-        <li key={move}>
+        <li key={move} className='historyItem'>
           <button onClick={() => jumpTo(move)}>{description}</button>
         </li>
       </>
@@ -130,13 +135,13 @@ export default function game(){
   });
 
   return (
-    <>
-      <div className='BodyGame'>
+    <div className='bodyContainers'>
+      <div className='bodyGame'>
         <Board squares={currentSquares} xIsNext={xIsNext} onPlay={handlePlay} jumpTo={jumpTo} />
       </div>
-      <div className='BodyHistory'>
-        <ol>{moves}</ol>
+      <div className='bodyHistory'>
+        <ol id="movesList">{moves}</ol>
       </div>
-    </>
+    </div>
   );
 }
