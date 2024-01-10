@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Square } from './components/Square'
 import './App.css'
 
-function Board({ squares, xIsNext, onPlay }){
+function Board({ squares, xIsNext, onPlay, jumpTo }){
   function handleClick(i){
     if(squares[i] || calculateWinner(squares)) return;
     
@@ -20,7 +20,7 @@ function Board({ squares, xIsNext, onPlay }){
     document.getElementById("restart-button").classList.add("d-none")
     document.getElementsByClassName("container")[0].classList.remove("d-none")
     document.getElementById("restart-game").classList.add("d-none")
-    onPlay(Array(9).fill(null));
+    jumpTo(0);
   }
 
   const winner = calculateWinner(squares);
@@ -45,7 +45,7 @@ function Board({ squares, xIsNext, onPlay }){
     <div className='d-none status-win'>
       <h3>{status_win}</h3>
       <div className='gradient'>
-        <button onClick={restartGame} className='d-none button-restart' id='restart-button'>Restart</button>
+        <button onClick={(restartGame)} className='d-none button-restart' id='restart-button'>Restart</button>
       </div>
     </div>
     <div className='container'>
@@ -100,15 +100,16 @@ export default function game(){
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
   const xIsNext = currentMove % 2 === 0;
-  const currentSquares = history[history.length - 1];
+  const currentSquares = history[currentMove];
 
   const handlePlay = (nextSquares) => {
-    setHistory([...history, nextSquares])
-    setCurrentMove(currentMove + 1)
+    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+    setHistory(nextHistory)
+    setCurrentMove(nextHistory.length -1)
   }
 
   const jumpTo = (move) => {
-    
+    setCurrentMove(move);
   }
 
   let description = "";
@@ -131,7 +132,7 @@ export default function game(){
   return (
     <>
       <div className='BodyGame'>
-        <Board squares={currentSquares} xIsNext={xIsNext} onPlay={handlePlay} />
+        <Board squares={currentSquares} xIsNext={xIsNext} onPlay={handlePlay} jumpTo={jumpTo} />
       </div>
       <div className='BodyHistory'>
         <ol>{moves}</ol>
