@@ -26,7 +26,7 @@ function Board({ squares, xIsNext, onPlay, jumpTo, hideContent, setHideContent }
   const arrNull = squares.includes(null);
 
   if(!winner && !arrNull){
-    document.getElementById("restart-game").classList.remove("d-none")
+    setHideContent(false);
   }
   
   if (winner) {
@@ -129,7 +129,7 @@ export default function game(){
   const jumpTo = (move) => {
     setCurrentMove(move);
     if (move === 0){
-      document.getElementById("restart-game").classList.add("d-none")
+      setHideContent(true);
     }
   }
 
@@ -142,11 +142,9 @@ export default function game(){
     }
 
     return (
-      <>
-        <li key={move} className='historyItem'>
-          <button onClick={() => jumpTo(move)}>{description}</button>
-        </li>
-      </>
+      <li key={move} className='historyItem'>
+        <button onClick={() => jumpTo(move)}>{description}</button>
+      </li>
     );
   });
 
