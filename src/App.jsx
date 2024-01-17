@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Square } from './components/Square'
+import confetti from 'canvas-confetti';
 import './App.css'
 
 function Board({ squares, xIsNext, onPlay, jumpTo, hideContent, setHideContent }){
@@ -32,6 +33,7 @@ function Board({ squares, xIsNext, onPlay, jumpTo, hideContent, setHideContent }
   if (winner) {
     try{
       status_win = "Winner: " + winner;
+      confetti();
       setHideContent(false)
     }catch(error){
       console.log(error);
@@ -41,7 +43,7 @@ function Board({ squares, xIsNext, onPlay, jumpTo, hideContent, setHideContent }
     status_next = "Next Player: " + (xIsNext ? "X" : "O");
   }
 
-
+  console.log("Board:", hideContent);
   return(
     <>
     <div className={`status-win ${hideContent ? "d-none" : ""}`}>
