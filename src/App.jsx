@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Square } from './components/Square'
 import './App.css'
 
-function Board({ squares, xIsNext, onPlay, jumpTo }){
+function Board({ squares, xIsNext, onPlay, jumpTo, hideContent, setHideContent }){
   function handleClick(i){
     if(squares[i] || calculateWinner(squares)) return;
     
@@ -16,11 +16,9 @@ function Board({ squares, xIsNext, onPlay, jumpTo }){
   let status_next;
 
   function restartGame(){
-    document.getElementsByClassName("status-win")[0].classList.add("d-none")
-    document.getElementById("restart-button").classList.add("d-none")
-    document.getElementsByClassName("container")[0].classList.remove("d-none")
-    document.getElementById("restart-game").classList.add("d-none")
-    document.getElementById("movesList").classList.remove("d-none");
+    setHideContent(true);
+    localStorage.removeItem("historyGame");
+    localStorage.removeItem("currentMove");
     jumpTo(0);
   }
 
@@ -32,11 +30,13 @@ function Board({ squares, xIsNext, onPlay, jumpTo }){
   }
   
   if (winner) {
-    status_win = "Winner: " + winner;
-    document.getElementsByClassName("status-win")[0].classList.remove("d-none")
-    document.getElementById("restart-button").classList.remove("d-none")
-    document.getElementsByClassName("container")[0].classList.add("d-none")
-    document.getElementById("movesList").classList.add("d-none");
+    try{
+      status_win = "Winner: " + winner;
+      setHideContent(false)
+    }catch(error){
+      console.log(error);
+    }
+    
   } else {
     status_next = "Next Player: " + (xIsNext ? "X" : "O");
   }
@@ -44,13 +44,13 @@ function Board({ squares, xIsNext, onPlay, jumpTo }){
 
   return(
     <>
-    <div className='d-none status-win'>
+    <div className={`status-win ${hideContent ? "d-none" : ""}`}>
       <h3>{status_win}</h3>
       <div className='gradient'>
-        <button onClick={(restartGame)} className='d-none button-restart' id='restart-button'>Restart</button>
+        <button onClick={(restartGame)} className={`button-restart ${hideContent ? "d-none" : ""}`} id='restart-button'>Restart</button>
       </div>
     </div>
-    <div className='container'>
+    <div className={`container ${hideContent ? "" : "d-none"}`}>
       <div className='status-next'>{status_next}</div>
       <div className='board-row'>
         <Square value={squares[0]} onSquareClick={() => (handleClick(0))} />
@@ -70,7 +70,7 @@ function Board({ squares, xIsNext, onPlay, jumpTo }){
         <Square value={squares[8]} onSquareClick={() => (handleClick(8))} />
       </div>
       <div className='gradient'>
-        <button onClick={restartGame} className='button-restart d-none' id='restart-game'>Restart</button>
+        <button onClick={restartGame} className={`button-restart ${hideContent ? "d-none" : ""}`} id='restart-game'>Restart</button>
       </div>
     </div>
     
@@ -99,9 +99,25 @@ function calculateWinner(squares) {
 }
 
 export default function game(){
+  const [loadingGame, setLoadingGame] = useState(false);
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
+  const [hideContent, setHideContent] = useState(true);
   const xIsNext = currentMove % 2 === 0;
+
+  useEffect(() => {
+    if(localStorage.getItem("currentMove") && localStorage.getItem("historyGame")){
+      setCurrentMove(JSON.parse(localStorage.getItem("currentMove")));
+      setHistory(JSON.parse(localStorage.getItem("historyGame")));
+    }
+    setLoadingGame(true);
+  }, []);
+
+  if(!loadingGame) return;
+
+  localStorage.setItem("historyGame", JSON.stringify(history));
+  localStorage.setItem("currentMove", JSON.stringify(currentMove));
+
   const currentSquares = history[currentMove];
 
   const handlePlay = (nextSquares) => {
@@ -137,10 +153,17 @@ export default function game(){
   return (
     <div className='bodyContainers'>
       <div className='bodyGame'>
-        <Board squares={currentSquares} xIsNext={xIsNext} onPlay={handlePlay} jumpTo={jumpTo} />
+        <Board 
+        squares={currentSquares} 
+        xIsNext={xIsNext} 
+        onPlay={handlePlay} 
+        jumpTo={jumpTo}
+        hideContent={hideContent}
+        setHideContent={setHideContent}
+        />
       </div>
       <div className='bodyHistory'>
-        <ol id="movesList">{moves}</ol>
+        <ol id="movesList" className={hideContent ? "" : "d-none"}>{moves}</ol>
       </div>
     </div>
   );
